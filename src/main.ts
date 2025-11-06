@@ -97,9 +97,7 @@ function render(container: HTMLElement, user: User, balance: string, address: st
   const greeting = `👋 Hello, ${userName}!`;
 
   container.innerHTML = `
-    <div class="container">
-      <h1>🚀 Kickstarter</h1>
-      
+    <div class="container">      
       <div class="card">
         <p style="text-align: center;">${greeting}</p>
       </div>
