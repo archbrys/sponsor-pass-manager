@@ -4,7 +4,6 @@ import './style.css';
 
 const sdk = new FrontierSDK();
 
-// USDC on Base Sepolia
 const CHRISTIANPETERS_ETH = '0x0a3772AA1432D31CDB2e90246525496e65E99ad8';
 
 async function init() {
