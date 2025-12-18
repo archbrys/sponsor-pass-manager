@@ -72,6 +72,8 @@ Third-party endpoints accept ...
 
 ### Rotate your developer API key
 
+Once you received you initial API Key with your developer account you should go ahead and rotate it to make sure it didn't get compromised on the transport:
+
 - `POST /third-party/developers/{developer_id}/rotate-key/`
 
 Notes:
