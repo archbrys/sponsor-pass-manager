@@ -173,7 +173,7 @@ Namespaces include:
 - `community`, `guest_check_in`, `internship_pass`, `supply_request`
 - `event`, `location`, `room_booking`
 - `sponsor`, `sponsor_pass`
-- `smart_account`, `bridge_account`, `recovery_request`, `required_signature`
+- `smart_account`, `bridge_account`, `recovery_request`
 - `post`, `citizen_suggestion`, `vote`
 - `developer`, `app`, `webhook`, `user`, `profile`, `subscription`
 
@@ -216,7 +216,6 @@ Examples by namespace:
 - smart_account: `{ "smart_accounts": [account_id], "users": [user_id] }`
 - bridge_account: `{ "bridge_accounts": [bridge_account_id], "users": [user_id] }`
 - recovery_request: `{ "recovery_requests": [request_id], "users": [user_id] }`
-- required_signature: `{ "required_signatures": [signature_id], "users": [user_id] }`
 - post: `{ "posts": [post_id], "users": [creator_id] }`
 - citizen_suggestion: `{ "citizen_suggestions": [suggestion_id], "users": [creator_id] }`
 - vote: `{ "votes": [vote_id], "citizen_suggestions": [suggestion_id], "users": [voter_id] }`
