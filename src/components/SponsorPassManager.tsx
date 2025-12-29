@@ -4,6 +4,7 @@ import { SponsorSelector } from './SponsorSelector';
 import { PassFilters } from './PassFilters';
 import { PassList } from './PassList';
 import { CreatePassModal } from './CreatePassModal';
+import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import type { Sponsor, SponsorPass, PaginatedResponse, CreateSponsorPassRequest } from '@/types';
 
 interface SponsorPassManagerProps {
@@ -119,19 +120,18 @@ export function SponsorPassManager({ sdk }: SponsorPassManagerProps) {
     return (
       <div className="container max-w-7xl mx-auto p-4 space-y-6">
         <h1 className="text-4xl font-bold text-white text-center">Sponsor Pass Manager</h1>
-        <div className="bg-card text-card-foreground rounded-lg border shadow-sm p-6">
-          <p className="text-center text-muted-foreground">
-            No sponsors found. You need to be assigned as a sponsor manager.
-          </p>
-        </div>
+        <Alert variant="info" appearance="light" size="lg">
+          <AlertTitle>No Sponsors Found</AlertTitle>
+          <AlertDescription>
+            You need to be assigned as a sponsor manager to access this feature.
+          </AlertDescription>
+        </Alert>
       </div>
     );
   }
 
   return (
     <div className="container max-w-7xl mx-auto p-4 space-y-6">
-      <h1 className="text-4xl font-bold text-white text-center">Sponsor Pass Manager</h1>
-
       <SponsorSelector
         sdk={sdk}
         sponsors={sponsors}

@@ -63,10 +63,10 @@ export function CreatePassModal({ open, onOpenChange, onSubmit }: CreatePassModa
             Fill in the details to create a new sponsor pass. All fields marked with * are required.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4 py-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="firstName">
+              <Label htmlFor="firstName" className="text-sm font-medium">
                 First Name <span className="text-destructive">*</span>
               </Label>
               <Input
@@ -78,7 +78,7 @@ export function CreatePassModal({ open, onOpenChange, onSubmit }: CreatePassModa
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="lastName">
+              <Label htmlFor="lastName" className="text-sm font-medium">
                 Last Name <span className="text-destructive">*</span>
               </Label>
               <Input
@@ -90,7 +90,7 @@ export function CreatePassModal({ open, onOpenChange, onSubmit }: CreatePassModa
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">
+              <Label htmlFor="email" className="text-sm font-medium">
                 Email <span className="text-destructive">*</span>
               </Label>
               <Input
@@ -103,7 +103,7 @@ export function CreatePassModal({ open, onOpenChange, onSubmit }: CreatePassModa
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="expiresAt">Expires At (Optional)</Label>
+              <Label htmlFor="expiresAt" className="text-sm font-medium">Expires At (Optional)</Label>
               <Input
                 id="expiresAt"
                 type="date"

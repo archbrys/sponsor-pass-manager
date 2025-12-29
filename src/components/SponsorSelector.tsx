@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { FrontierSDK } from '@frontiertower/frontier-sdk';
 import { Plus } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
@@ -25,10 +24,10 @@ export function SponsorSelector({
 
   return (
     <Card>
-      <CardHeader>
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex-1 space-y-2">
-            <Label htmlFor="sponsor-select">Select Sponsor</Label>
+      <CardHeader className="flex-row items-center justify-between space-y-0">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:flex-1">
+          <div className="space-y-2">
+            <Label htmlFor="sponsor-select" className="text-base font-semibold">Select Sponsor</Label>
             <Select
               value={selectedSponsorId?.toString()}
               onValueChange={(value) => onSponsorChange(parseInt(value))}
@@ -53,14 +52,16 @@ export function SponsorSelector({
       </CardHeader>
       {selectedSponsor && (
         <CardContent>
-          <div className="space-y-2 text-sm">
-            <p>
-              <strong>Daily Rate:</strong> {selectedSponsor.dailyRate}
-            </p>
+          <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="flex items-baseline gap-2">
+              <span className="font-semibold text-foreground">Daily Rate:</span>
+              <span>{selectedSponsor.dailyRate}</span>
+            </div>
             {selectedSponsor.notes && (
-              <p>
-                <strong>Notes:</strong> {selectedSponsor.notes}
-              </p>
+              <div className="flex items-baseline gap-2">
+                <span className="font-semibold text-foreground">Notes:</span>
+                <span>{selectedSponsor.notes}</span>
+              </div>
             )}
           </div>
         </CardContent>

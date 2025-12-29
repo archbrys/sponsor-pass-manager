@@ -2,6 +2,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
   Table,
   TableBody,
@@ -38,9 +39,10 @@ export function PassList({
   if (isLoading) {
     return (
       <Card>
-        <CardContent className="pt-6">
-          <div className="flex items-center justify-center py-8 text-muted-foreground">
-            Loading passes...
+        <CardContent className="py-12">
+          <div className="flex flex-col items-center justify-center gap-3">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+            <p className="text-sm text-muted-foreground">Loading passes...</p>
           </div>
         </CardContent>
       </Card>
@@ -51,7 +53,9 @@ export function PassList({
     return (
       <Card>
         <CardContent className="pt-6">
-          <div className="rounded-lg bg-destructive/10 p-4 text-destructive">{error}</div>
+          <Alert variant="destructive" appearance="light">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
     );
@@ -64,8 +68,10 @@ export function PassList({
       </CardHeader>
       <CardContent>
         {passes.length === 0 ? (
-          <div className="flex items-center justify-center py-8 text-muted-foreground italic">
-            No passes found for this sponsor.
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <p className="text-sm text-muted-foreground">
+              No passes found for this sponsor.
+            </p>
           </div>
         ) : (
           <>
@@ -83,35 +89,49 @@ export function PassList({
                 </TableHeader>
                 <TableBody>
                   {passes.map((pass) => (
-                    <TableRow key={pass.id} className={pass.status === 'revoked' ? 'opacity-60' : ''}>
+                    <TableRow 
+                      key={pass.id} 
+                      className={pass.status === 'revoked' ? 'opacity-50' : ''}
+                    >
                       <TableCell className="font-medium">
                         {pass.firstName} {pass.lastName}
                       </TableCell>
-                      <TableCell>{pass.email}</TableCell>
+                      <TableCell className="text-muted-foreground">{pass.email}</TableCell>
                       <TableCell>
-                        <Badge variant={pass.status === 'active' ? 'success' : 'destructive'}>
+                        <Badge 
+                          variant={pass.status === 'active' ? 'success' : 'destructive'}
+                          appearance="light"
+                          size="sm"
+                        >
                           {pass.status === 'active' ? '✓ Active' : '✗ Revoked'}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        {pass.expiresAt ? new Date(pass.expiresAt).toLocaleDateString() : 'Never'}
+                        {pass.expiresAt ? (
+                          <span className="text-sm">{new Date(pass.expiresAt).toLocaleDateString()}</span>
+                        ) : (
+                          <span className="text-sm text-muted-foreground">No expiration</span>
+                        )}
                       </TableCell>
-                      <TableCell>{new Date(pass.createdAt).toLocaleDateString()}</TableCell>
+                      <TableCell className="text-muted-foreground text-sm">
+                        {new Date(pass.createdAt).toLocaleDateString()}
+                      </TableCell>
                       <TableCell>
                         {pass.status === 'active' ? (
                           <Button
-                            variant="destructive"
+                            variant="outline"
                             size="sm"
                             onClick={() =>
                               onRevoke(pass.id, `${pass.firstName} ${pass.lastName}`)
                             }
+                            className="text-destructive hover:bg-destructive/10 border-destructive/20"
                           >
                             Revoke
                           </Button>
                         ) : (
-                          <span className="text-xs text-muted-foreground italic">
+                          <span className="text-xs text-muted-foreground">
                             Revoked{' '}
-                            {pass.revokedAt ? new Date(pass.revokedAt).toLocaleDateString() : ''}
+                            {pass.revokedAt && new Date(pass.revokedAt).toLocaleDateString()}
                           </span>
                         )}
                       </TableCell>
@@ -122,28 +142,31 @@ export function PassList({
             </div>
 
             {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-4 pt-4 border-t mt-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onPageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                >
-                  <ChevronLeft className="mr-2 h-4 w-4" />
-                  Previous
-                </Button>
-                <span className="text-sm font-medium">
-                  Page {currentPage} of {totalPages}
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onPageChange(currentPage + 1)}
-                  disabled={currentPage >= totalPages}
-                >
-                  Next
-                  <ChevronRight className="ml-2 h-4 w-4" />
-                </Button>
+              <div className="flex items-center justify-between gap-4 pt-4 mt-4 border-t">
+                <div className="text-sm text-muted-foreground">
+                  Showing {((currentPage - 1) * pageSize) + 1} to {Math.min(currentPage * pageSize, totalPasses)} of {totalPasses} passes
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onPageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <span className="text-sm font-medium px-2">
+                    {currentPage} / {totalPages}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onPageChange(currentPage + 1)}
+                    disabled={currentPage >= totalPages}
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             )}
           </>
