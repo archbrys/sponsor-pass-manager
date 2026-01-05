@@ -8,7 +8,7 @@ import { mockSponsors, getMockPassesForSponsor } from '@/lib/mockData';
 import type { Sponsor, SponsorPass, PaginatedResponse, CreateSponsorPassRequest } from '@/types';
 
 // Toggle this to use mock data for testing
-const USE_MOCK_DATA = true;
+const USE_MOCK_DATA = false;
 
 interface SponsorPassManagerProps {
   sdk: FrontierSDK;
