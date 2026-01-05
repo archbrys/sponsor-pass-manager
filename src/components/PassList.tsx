@@ -1,8 +1,11 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
+import { Button } from '@/ui/button';
+import { Badge } from '@/ui/badge';
+import { Checkbox } from '@/ui/checkbox';
+import { Label } from '@/ui/label';
+import { Alert, AlertDescription } from '@/ui/alert';
+import { formatDateCET } from '@/lib/utils';
 import {
   Table,
   TableBody,
@@ -10,7 +13,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '@/ui/table';
 import type { SponsorPass } from '@/types';
 
 interface PassListProps {
@@ -20,6 +23,8 @@ interface PassListProps {
   pageSize: number;
   isLoading: boolean;
   error: string | null;
+  includeRevoked: boolean;
+  onIncludeRevokedChange: (checked: boolean) => void;
   onRevoke: (passId: number, passName: string) => void;
   onPageChange: (page: number) => void;
 }
@@ -31,6 +36,8 @@ export function PassList({
   pageSize,
   isLoading,
   error,
+  includeRevoked,
+  onIncludeRevokedChange,
   onRevoke,
   onPageChange,
 }: PassListProps) {
@@ -53,7 +60,7 @@ export function PassList({
     return (
       <Card>
         <CardContent className="pt-6">
-          <Alert variant="destructive" appearance="light">
+          <Alert variant="destructive">
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         </CardContent>
@@ -63,23 +70,41 @@ export function PassList({
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Sponsor Passes ({totalPasses})</CardTitle>
+      <CardHeader className="flex-row items-center justify-between space-y-0">
+        <div className="flex items-center gap-2">
+          <CardTitle className="text-xl">Sponsor Passes</CardTitle>
+          {totalPasses > 0 && (
+            <Badge variant="primary" size="sm" className="font-semibold">
+              {totalPasses}
+            </Badge>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox
+            id="include-revoked"
+            checked={includeRevoked}
+            onCheckedChange={(checked) => onIncludeRevokedChange(checked === true)}
+          />
+          <Label htmlFor="include-revoked" className="cursor-pointer text-sm font-medium leading-none">
+            Show Revoked Passes
+          </Label>
+        </div>
       </CardHeader>
       <CardContent>
         {passes.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
+            <img src="/no-passes.svg" alt="No passes" className="w-32 h-32" />
             <p className="text-sm text-muted-foreground">
               No passes found for this sponsor.
             </p>
           </div>
         ) : (
           <>
-            <div className="rounded-md border">
+            <div className="rounded-lg border border-border overflow-hidden">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Name</TableHead>
+                    <TableHead className="border-0">Name</TableHead>
                     <TableHead>Email</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Expires At</TableHead>
@@ -91,7 +116,7 @@ export function PassList({
                   {passes.map((pass) => (
                     <TableRow 
                       key={pass.id} 
-                      className={pass.status === 'revoked' ? 'opacity-50' : ''}
+                      className={`*:border-border hover:bg-transparent [&>:not(:last-child)]:border-r ${pass.status === 'revoked' ? 'opacity-50' : ''}`}
                     >
                       <TableCell className="font-medium">
                         {pass.firstName} {pass.lastName}
@@ -100,38 +125,35 @@ export function PassList({
                       <TableCell>
                         <Badge 
                           variant={pass.status === 'active' ? 'success' : 'destructive'}
-                          appearance="light"
-                          size="sm"
                         >
                           {pass.status === 'active' ? '✓ Active' : '✗ Revoked'}
                         </Badge>
                       </TableCell>
                       <TableCell>
                         {pass.expiresAt ? (
-                          <span className="text-sm">{new Date(pass.expiresAt).toLocaleDateString()}</span>
+                          <span className="text-sm">{formatDateCET(pass.expiresAt, { dateStyle: 'medium' })}</span>
                         ) : (
                           <span className="text-sm text-muted-foreground">No expiration</span>
                         )}
                       </TableCell>
                       <TableCell className="text-muted-foreground text-sm">
-                        {new Date(pass.createdAt).toLocaleDateString()}
+                        {formatDateCET(pass.createdAt, { dateStyle: 'medium' })}
                       </TableCell>
                       <TableCell>
                         {pass.status === 'active' ? (
                           <Button
-                            variant="outline"
+                            variant="destructive"
                             size="sm"
                             onClick={() =>
                               onRevoke(pass.id, `${pass.firstName} ${pass.lastName}`)
                             }
-                            className="text-destructive hover:bg-destructive/10 border-destructive/20"
                           >
                             Revoke
                           </Button>
                         ) : (
                           <span className="text-xs text-muted-foreground">
                             Revoked{' '}
-                            {pass.revokedAt && new Date(pass.revokedAt).toLocaleDateString()}
+                            {pass.revokedAt && formatDateCET(pass.revokedAt, { dateStyle: 'medium' })}
                           </span>
                         )}
                       </TableCell>
@@ -142,7 +164,7 @@ export function PassList({
             </div>
 
             {totalPages > 1 && (
-              <div className="flex items-center justify-between gap-4 pt-4 mt-4 border-t">
+              <div className="flex items-center justify-between gap-4 pt-4">
                 <div className="text-sm text-muted-foreground">
                   Showing {((currentPage - 1) * pageSize) + 1} to {Math.min(currentPage * pageSize, totalPasses)} of {totalPasses} passes
                 </div>

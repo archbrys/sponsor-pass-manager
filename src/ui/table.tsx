@@ -1,7 +1,7 @@
 'use client';
 
-import * as React from 'react';
 import { cn } from '@/lib/utils';
+import * as React from 'react';
 
 function Table({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) {
   return (
@@ -12,7 +12,7 @@ function Table({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) 
 }
 
 function TableHeader({ className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) {
-  return <thead data-slot="table-header" className={cn('[&_tr]:border-b', className)} {...props} />;
+  return <thead data-slot="table-header" className={cn('[&_tr]:border-b [&_tr]:border-border', className)} {...props} />;
 }
 
 function TableBody({ className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) {
@@ -34,7 +34,7 @@ function TableRow({ className, ...props }: React.HTMLAttributes<HTMLTableRowElem
     <tr
       data-slot="table-row"
       className={cn(
-        'border-b transition-colors [&:has(td):hover]:bg-muted/50 data-[state=selected]:bg-muted',
+        'border-b border-border transition-colors [&:has(td):hover]:bg-muted/50 data-[state=selected]:bg-muted',
         className,
       )}
       {...props}
