@@ -18,6 +18,7 @@ export default defineConfig({
     cors: {
       origin: [
         'http://localhost:5173',
+        'https://sandbox.os.frontiertower.io',
         'https://sandbox.wallet.frontiertower.io',
         'https://alpha.wallet.frontiertower.io',
         'https://beta.wallet.frontiertower.io',
