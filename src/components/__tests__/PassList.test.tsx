@@ -164,7 +164,10 @@ describe('PassList', () => {
     render(<PassList {...defaultProps} totalPasses={25} pageSize={10} />);
     
     expect(screen.getByText('Showing 1 to 10 of 25 passes')).toBeInTheDocument();
-    expect(screen.getByText('1 / 3')).toBeInTheDocument();
+    // Check that page number buttons are rendered (1, 2, 3)
+    expect(screen.getByText('1')).toBeInTheDocument();
+    expect(screen.getByText('2')).toBeInTheDocument();
+    expect(screen.getByText('3')).toBeInTheDocument();
   });
 
   it('does not render pagination when there is only one page', () => {

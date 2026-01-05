@@ -165,11 +165,12 @@ export function PassList({
             </div>
 
             {totalPages > 1 && (
-              <div className="flex items-center justify-end gap-4 pt-4">
-                <div className="text-sm text-muted-foreground">
+              <div className="flex items-center justify-between gap-4 pt-4">
+                <div className="flex-shrink-0 text-sm text-muted-foreground">
                   Showing {((currentPage - 1) * pageSize) + 1} to {Math.min(currentPage * pageSize, totalPasses)} of {totalPasses} passes
                 </div>
-                <Pagination>
+                <div>
+                  <Pagination>
                   <PaginationContent>
                     <PaginationItem>
                       <Button
@@ -181,11 +182,18 @@ export function PassList({
                         <ChevronLeft className="h-4 w-4" />
                       </Button>
                     </PaginationItem>
-                    <PaginationItem>
-                      <span className="text-sm font-medium px-2">
-                        {currentPage} / {totalPages}
-                      </span>
-                    </PaginationItem>
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <PaginationItem key={page}>
+                        <Button
+                          variant={page === currentPage ? 'outline' : 'ghost'}
+                          size="sm"
+                          onClick={() => onPageChange(page)}
+                          className="min-w-[2.5rem]"
+                        >
+                          {page}
+                        </Button>
+                      </PaginationItem>
+                    ))}
                     <PaginationItem>
                       <Button
                         variant="ghost"
@@ -198,6 +206,9 @@ export function PassList({
                     </PaginationItem>
                   </PaginationContent>
                 </Pagination>
+
+                </div>
+                
               </div>
             )}
           </>
