@@ -117,7 +117,7 @@ describe('CreatePassModal', () => {
 
   it('disables submit button while submitting', async () => {
     const user = userEvent.setup();
-    const slowSubmit = vi.fn(() => new Promise((resolve) => setTimeout(resolve, 100)));
+    const slowSubmit = vi.fn(() => new Promise<void>((resolve) => setTimeout(resolve, 100)));
     render(<CreatePassModal {...defaultProps} onSubmit={slowSubmit} />);
     
     await user.type(screen.getByLabelText(/First Name/), 'John');
