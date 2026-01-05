@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
+import { Pagination, PaginationContent, PaginationItem } from '@/ui/pagination';
 import type { SponsorPass } from '@/types';
 
 interface PassListProps {
@@ -164,31 +165,39 @@ export function PassList({
             </div>
 
             {totalPages > 1 && (
-              <div className="flex items-center justify-between gap-4 pt-4">
+              <div className="flex items-center justify-end gap-4 pt-4">
                 <div className="text-sm text-muted-foreground">
                   Showing {((currentPage - 1) * pageSize) + 1} to {Math.min(currentPage * pageSize, totalPasses)} of {totalPasses} passes
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onPageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                  <span className="text-sm font-medium px-2">
-                    {currentPage} / {totalPages}
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onPageChange(currentPage + 1)}
-                    disabled={currentPage >= totalPages}
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onPageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                      </Button>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <span className="text-sm font-medium px-2">
+                        {currentPage} / {totalPages}
+                      </span>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onPageChange(currentPage + 1)}
+                        disabled={currentPage >= totalPages}
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               </div>
             )}
           </>

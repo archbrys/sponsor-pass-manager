@@ -226,9 +226,6 @@ export function SponsorPassManager({ sdk }: SponsorPassManagerProps) {
     );
   }
 
-  // Show full interface when sponsor is selected
-  const selectedSponsor = sponsors.find((s) => s.id === selectedSponsorId);
-
   return (
     <div className="container max-w-7xl mx-auto p-4 space-y-6">
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end justify-between">

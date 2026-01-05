@@ -38,6 +38,31 @@ A **Sponsor Pass Manager** demo app for the Frontier App Store, demonstrating ho
    npm run preview  # Preview production build
    ```
 
+### Using Mock Data for Testing
+
+The app includes a mock data system for testing without API access. To enable it:
+
+1. Open [src/components/SponsorPassManager.tsx](src/components/SponsorPassManager.tsx)
+2. Set the `USE_MOCK_DATA` flag to `true` (line 11):
+   ```typescript
+   const USE_MOCK_DATA = true;
+   ```
+3. Save and the dev server will reload with mock data
+
+**When to use mock data:**
+- Testing UI without backend access
+- Developing offline
+- Testing loading states and error handling
+- Running automated tests
+
+**What the mock data simulates:**
+- Network delays (300-800ms)
+- Paginated responses
+- Multiple sponsors with sample passes
+- Active and revoked pass statuses
+
+Mock data is defined in [src/lib/mockData.ts](src/lib/mockData.ts). Set `USE_MOCK_DATA = false` to use the real Frontier SDK.
+
 ## 🧪 Testing Your App in Frontier Wallet
 
 ### Installing the Frontier Wallet PWA
@@ -298,7 +323,7 @@ const lastSponsor = await storage.get('lastSelectedSponsor');
 ## 🧑‍💻 Development Tips
 
 - **Use Chrome** for primary development (best DevTools for iframe debugging)
-- **Enable mock data** via `USE_MOCK_DATA` flag in SponsorPassManager.tsx
+- **Enable mock data** by setting `USE_MOCK_DATA = true` in [SponsorPassManager.tsx](src/components/SponsorPassManager.tsx) - useful for offline development and testing
 - **Check console** for SDK request/response logs
 - **Test CORS** by loading app in actual Frontier Wallet iframe
 - **Verify iframe context** with `isInFrontierApp()` check
