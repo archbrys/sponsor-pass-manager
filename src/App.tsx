@@ -1,6 +1,7 @@
 import { FrontierSDK } from '@frontiertower/frontier-sdk';
 import { isInFrontierApp } from '@frontiertower/frontier-sdk/ui-utils';
 import { SponsorPassManager } from './components/SponsorPassManager';
+import { Toaster } from '@/ui/toaster';
 import './style.css'
 
 const sdk = new FrontierSDK();
@@ -18,7 +19,12 @@ function App() {
     );
   }
 
-  return <SponsorPassManager sdk={sdk} />;
+  return (
+    <>
+      <SponsorPassManager sdk={sdk} />
+      <Toaster />
+    </>
+  );
 }
 
 export default App;

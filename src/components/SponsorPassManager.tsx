@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { FrontierSDK } from '@frontiertower/frontier-sdk';
+import { toast } from 'sonner';
 import { Plus } from 'lucide-react';
 import { PassList } from './PassList';
 import { CreatePassModal } from './CreatePassModal';
@@ -44,7 +45,11 @@ export function SponsorPassManager({ sdk }: SponsorPassManagerProps) {
           setSponsors(response.results);
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load sponsors');
+        const errorMessage = err instanceof Error ? err.message : 'Failed to load sponsors';
+        setError(errorMessage);
+        toast.error('Failed to load sponsors', {
+          description: errorMessage,
+        });
       } finally {
         setIsLoadingSponsors(false);
       }
@@ -95,7 +100,11 @@ export function SponsorPassManager({ sdk }: SponsorPassManagerProps) {
         setTotalPasses(response.count);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load passes');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load passes';
+      setError(errorMessage);
+      toast.error('Failed to load passes', {
+        description: errorMessage,
+      });
     } finally {
       setIsLoadingPasses(false);
     }
@@ -132,9 +141,18 @@ export function SponsorPassManager({ sdk }: SponsorPassManagerProps) {
       } else {
         await sdk.getPartnerships().revokeSponsorPass({ id: passToRevoke.id });
       }
+      
+      toast.success('Pass revoked successfully', {
+        description: `Pass for ${passToRevoke.name} has been revoked`,
+      });
+      
       await loadPasses();
     } catch (err) {
-      setError(`Failed to revoke pass: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      const errorMessage = `Failed to revoke pass: ${err instanceof Error ? err.message : 'Unknown error'}`;
+      setError(errorMessage);
+      toast.error('Failed to revoke pass', {
+        description: err instanceof Error ? err.message : 'Unknown error',
+      });
     } finally {
       setPassToRevoke(null);
     }
