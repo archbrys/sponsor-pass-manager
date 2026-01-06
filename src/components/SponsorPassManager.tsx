@@ -8,7 +8,7 @@ import { mockSponsors, getMockPassesForSponsor } from '@/lib/mockData';
 import type { Sponsor, SponsorPass, PaginatedResponse, CreateSponsorPassRequest } from '@/types';
 
 // Toggle this to use mock data for testing
-const USE_MOCK_DATA = false;
+const USE_MOCK_DATA = true;
 
 interface SponsorPassManagerProps {
   sdk: FrontierSDK;
@@ -28,6 +28,7 @@ export function SponsorPassManager({ sdk }: SponsorPassManagerProps) {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [passToRevoke, setPassToRevoke] = useState<{ id: number; name: string } | null>(null);
+  const [viewLayout, setViewLayout] = useState<'grid' | 'table'>('grid');
 
   // Load sponsors on mount
   useEffect(() => {
@@ -267,6 +268,8 @@ export function SponsorPassManager({ sdk }: SponsorPassManagerProps) {
         isLoading={isLoadingPasses}
         error={error}
         includeRevoked={includeRevoked}
+        viewLayout={viewLayout}
+        onViewLayoutChange={setViewLayout}
         onIncludeRevokedChange={handleIncludeRevokedChange}
         onRevoke={handleRevoke}
         onPageChange={setCurrentPage}

@@ -18,7 +18,7 @@ export function PassFilters({ includeRevoked, onIncludeRevokedChange }: PassFilt
             onCheckedChange={(checked) => onIncludeRevokedChange(checked === true)}
           />
           <Label htmlFor="include-revoked" className="cursor-pointer text-sm font-medium leading-none">
-            Show Revoked Passes
+            Show Revoked
           </Label>
         </div>
       </CardContent>
