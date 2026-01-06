@@ -107,6 +107,7 @@ export function SponsorPassManager({ sdk }: SponsorPassManagerProps) {
   const handleSponsorChange = (sponsorId: number) => {
     setSelectedSponsorId(sponsorId);
     setCurrentPage(1);
+    setIncludeRevoked(false);
   };
 
   const handleIncludeRevokedChange = (checked: boolean) => {
